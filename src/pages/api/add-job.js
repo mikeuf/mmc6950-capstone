@@ -1,15 +1,23 @@
 import { query } from '../../lib/db';
 
-const destination_id = 1;
-
 export default async function handler(req, res) {
-  const { hostname, path } = req.body;
+  const destinationIds = [1, 2, 3];  // Temporary POC data 
+
   try {
-    const result = await query(
-      'INSERT INTO job (destination_id) VALUES ($1) RETURNING *',
-      [destination_id]
+    const jobResult = await query(
+      'INSERT INTO job DEFAULT VALUES RETURNING job_id'
     );
-    res.json(result.rows[0]);
+    const jobId = jobResult.rows[0].job_id;
+
+    const queryString = `
+      INSERT INTO job_destination (job_id, destination_id)
+      VALUES ${destinationIds.map((_, idx) => `($1, $${idx + 2})`).join(', ')}
+      RETURNING *;
+    `;
+    const values = [jobId, ...destinationIds];
+
+    const result = await query(queryString, values);
+    res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
