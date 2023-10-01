@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "latest",
+    "next": "^13.5.3",
     "pg": "^8.11.3",
-    "react": "latest",
-    "react-dom": "latest"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
