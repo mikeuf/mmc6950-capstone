@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 //  res.status(200).json({ text: 'Jobs' });
   try {
     const result = await query(
-      'SELECT * FROM job',
+      'SELECT * FROM :SCHEMA.job',
     );
     res.json(result.rows);
   } catch (error) {

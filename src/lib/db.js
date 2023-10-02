@@ -4,6 +4,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const SCHEMA_NAME = '2023_10_01';
+
 const { Pool } = require('pg');
 
 const certPath = path.resolve(__dirname, '../../../../src/lib/ssl/certificate.crt');
@@ -16,13 +18,19 @@ const pool = new Pool({
   password: 'AVNS_ddLSGYw7ciIsyyP-Q5D',
   sslmode: 'require',
   port: 25060,
-	  ssl: {
-    rejectUnauthorized: false, // You may want to change this
-		  ca: fs.readFileSync(certPath).toString(),
+  ssl: {
+  rejectUnauthorized: false,
+  ca: fs.readFileSync(certPath).toString(),
   }
 });
 
+function prepQuery(text) {
+  return text.replace(/:SCHEMA\./g, `"${SCHEMA_NAME}".`);
+}
+
 module.exports = {
-  query: (text, params) => pool.query(text, params),
+  query: (text, params) => pool.query(prepQuery(text), params),
+  SCHEMA_NAME,  
 };
+
 

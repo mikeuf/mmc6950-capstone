@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const { hostname, path } = req.body;
   try {
     const result = await query(
-      'INSERT INTO destination (hostname, path) VALUES ($1, $2) RETURNING *',
+      'INSERT INTO :SCHEMA.destination (hostname, path) VALUES ($1, $2) RETURNING *',
       [hostname, path]
     );
     res.json(result.rows[0]);
