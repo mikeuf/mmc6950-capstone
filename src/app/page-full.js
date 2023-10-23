@@ -1,10 +1,9 @@
-import Head from '../components/CustomHead'; 
-import NavBar from '../components/NavBar'; 
+//import Head from '../components/CustomHead'; 
+//import NavBar from '../components/NavBar'; 
 
 export default function Home() { 
-  return ( 
-	  <>
-    <div className="container mt-5"> 
+  return ( <p>hello world</p> 
+	  {/*    <div className="container mt-5"> 
       <div className="row"> 
         <div className="col-6"> 
           <div className="card shadow-sm"> 
@@ -43,9 +42,7 @@ export default function Home() {
           </div>
         </div>
       </div> 
-    </div> 
-    <script src="/static/assets/script.js" />
-	  </>
+    </div> */}
   ); 
 } 
 
