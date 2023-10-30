@@ -35,10 +35,13 @@ window.submitList = function () {
             await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_WAIT_TIME));
 
             // Pass the URL as a query parameter to a server-side Express.js app to send the network requests.
-            fetch(`/scan?url=${encodeURIComponent(url)}`, {
+            fetch(`/add-test-result?url=${encodeURIComponent(url)}`, {
                 method: 'GET'
             })
                 .then(response => response.text())
+		.then(data => {
+			console.log(data);
+		});
                 .then(result => {
                     let resultEntry;
                     if (result.redirected) {

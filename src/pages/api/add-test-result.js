@@ -1,6 +1,15 @@
+import fetch from 'node-fetch';
+
 import { query } from '../../lib/db';
 
 export default async function handler(req, res) {
+	  try {
+    const url = req.query.url; // Get the URL from the query
+
+    const response = await fetch(url); // Fetch the URL
+    const statusCode = response.status;
+    const responseData = await response.json();
+
 	const date = new Date();
 	const timestampString = date.toISOString();
 	const dns_response = "143.166.135.105";
