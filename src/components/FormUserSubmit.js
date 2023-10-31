@@ -7,7 +7,7 @@ function FormUserSubmit() {
     <form>
       <div className="mb-3">
         <label htmlFor="username-field" className="form-label">
-          Add URLs to check, with one line per entry.
+          Add name of user.
         </label>
         <textarea
           id="username-field"

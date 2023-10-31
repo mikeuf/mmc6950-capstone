@@ -7,8 +7,11 @@ const path = require('path');
 const SCHEMA_NAME = '2023_10_01';
 
 const { Pool } = require('pg');
+const certPath = '/var/www/html/resource-scanner/src/lib/ssl/certificate.crt';
 
-const certPath = path.resolve(__dirname, '../../../../src/lib/ssl/certificate.crt');
+
+//const certPath = path.resolve(__dirname, '../../../../src/lib/ssl/certificate.crt');
+//const certPath = path.resolve(__dirname, './ssl/certificate.crt');
 
 
 const pool = new Pool({
