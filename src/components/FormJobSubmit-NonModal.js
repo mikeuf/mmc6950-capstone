@@ -1,18 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import Modal from './ModalWindow.js';
 
 export default function FormJobSubmit() {
   const [jobNumber, setJobNumber] = useState("2");
   const [results, setResults] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [isLoading, setIsLoading] = useState(false); 
 
   function submitJobNumber(event) {
     event.preventDefault();
-    setIsLoading(true); 
-    setIsModalOpen(true); 
+    alert(`The job number you entered was:\n${jobNumber}`);
 
     let newResults = [];
 	  fetch(`/job/${jobNumber}`, {
@@ -28,6 +24,10 @@ export default function FormJobSubmit() {
   return response.json();
 })
 .then(data => {
+  console.log(data);
+  return data; // Propagate data to the next .then()
+})
+.then(data => {
   let resultEntry;
   if (data && data.job) { // Safety check
 	  resultEntry = `
@@ -40,16 +40,16 @@ export default function FormJobSubmit() {
   } else {
     resultEntry = 'Unexpected data structure';
   }
- newResults.push({ jobNumber, result: resultEntry });
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      newResults.push({ jobNumber, result: error.message });
-    })
-    .finally(() => {
-      setResults([...newResults]);
-      setIsLoading(false);
-    });
+
+  newResults.push({ jobNumber, result: resultEntry });
+  setResults([...newResults]);
+})
+.catch(error => {
+  console.error('Error:', error);
+  newResults.push({ jobNumber, result: error.message });
+  setResults([...newResults]);
+});
+
   }
 
   return (
@@ -74,22 +74,12 @@ export default function FormJobSubmit() {
           Submit
         </button>
       </form>
-      
-	   <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} title="Getting Job">
-        {isLoading ? (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        ) : (
-          results.map(({ jobNumber, result }) => (
-            <div key={jobNumber}>{`${jobNumber}\t${result}`}</div>
-          ))
-        )}
-      </Modal>
-
-	  </div>
+      <div id="ret">
+        {results.map(({ jobNumber, result }) => (
+          <div key={jobNumber}>{`${jobNumber}\t${result}`}</div>
+        ))}
+      </div>
+    </div>
   );
 }
 
