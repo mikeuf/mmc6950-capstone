@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 374.34 42.93">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-2 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-3 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-5, .cls-6 {
+        fill: #64b1e2;
+      }
+
+      .cls-7 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-8 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-9 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-10 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-6 {
+        font-family: Quatro-Bold, Quatro;
+        font-size: 35.42px;
+      }
+
+      .cls-11 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-12 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-13 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-14 {
+        letter-spacing: -.04em;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1" data-name="Layer 1"/>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_2-2" data-name="Layer 2">
+      <g>
+        <path class="cls-5" d="M297.26,12.62c1.01,.21,2.42,.74,3.86,1.53,6.21,3.42,12.78,11.61-11.53,18.66,24.48,1.61,40.49-17.67,7.67-20.19Z"/>
+        <path class="cls-5" d="M299.22,6.58c11.78,.78,51.21,17.26,3.44,30.08,43.2,1.83,49.35-29.24-3.44-30.08Z"/>
+        <path class="cls-5" d="M297.22,.26c24.86-1.57,90.17,22.68,20.62,41.49,82.17-3.22,74.21-45.4-20.62-41.49Z"/>
+      </g>
+      <text class="cls-6" transform="translate(0 33.72)"><tspan class="cls-14" x="0" y="0">R</tspan><tspan class="cls-4" x="21.92" y="0">e</tspan><tspan class="cls-10" x="41.44" y="0">s</tspan><tspan class="cls-1" x="58.22" y="0">o</tspan><tspan class="cls-7" x="78.94" y="0">u</tspan><tspan class="cls-12" x="98.49" y="0">r</tspan><tspan class="cls-3" x="112.83" y="0">c</tspan><tspan class="cls-14" x="130.22" y="0">e </tspan><tspan class="cls-9" x="156.6" y="0">Sc</tspan><tspan class="cls-8" x="194.11" y="0">an</tspan><tspan class="cls-2" x="231.68" y="0">n</tspan><tspan class="cls-11" x="251.88" y="0">e</tspan><tspan class="cls-13" x="270.86" y="0">r</tspan></text>
+    </g>
+  </g>
+</svg>
