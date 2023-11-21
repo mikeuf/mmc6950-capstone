@@ -1,3 +1,20 @@
 .hidden {
   visibility: hidden;
 }
+
+#main-container-fluid {
+	background: #5eb2eb;
+	color: #ffffff;
+}
+
+#main-container {
+	margin: auto;
+	padding: 1rem;
+}
+
+button {
+    background: #ffffff !important;
+    color: #5eb2eb !important;
+    font-weight: bold !important;
+    border: 0 !important;
+}

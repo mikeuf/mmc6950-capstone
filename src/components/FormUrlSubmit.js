@@ -1,46 +1,52 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
+import Modal from './ModalWindow.js';
 
 export default function FormUrlSubmit() {
   const [urlList, setUrlList] = useState("example.com\ninstagram.com\nfacebook.com\ngoogle.com\nmicrosoft.com");
   const [results, setResults] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   function submitList(event) {
     event.preventDefault();
-    alert(`The URLs you entered were:\n${urlList}`);
+    setIsLoading(true);
+    setIsModalOpen(true); 
 
-    async function checkUrls(urls) {
-        const RATE_LIMIT_WAIT_TIME = 2000;
-        let newResults = [];
-        for (const url of urls.split('\n')) {
-            // Wait for a short time between each HTTP request
-            await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_WAIT_TIME));
+	  async function checkUrls(urls) {
+  const RATE_LIMIT_WAIT_TIME = 2000;
+  const urlArray = urls.split('\n');
 
-            // Pass the URL as a query parameter to a server-side Express.js app to send the network requests.
-            fetch(`/api/add-test-result?url=${encodeURIComponent(url)}`, {
-                method: 'GET'
-            })
-            .then(response => response.json())
-            .then(data => {
-                let resultEntry;
-                if (data.redirected) {
-                    resultEntry = `Redirect (${data.url})`;
-                } else {
-                    resultEntry = `${data.http_status_code} ${data.server_response}`;
-                }
-                newResults.push({ url, result: resultEntry });
-		    setResults([...newResults]);
+  for (let i = 0; i < urlArray.length; i++) {
+    const url = urlArray[i];
 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                newResults.push({ url, result: error.message });
-		    setResults([...newResults]);
+    await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_WAIT_TIME));
 
-            });
-        }
+    fetch(`/api/add-test-result?url=${encodeURIComponent(url)}`, {
+      method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+      let resultEntry;
+      if (data.redirected) {
+        resultEntry = `Redirect (${data.url})`;
+      } else {
+        resultEntry = `${data.http_status_code} ${data.server_response}`;
+      }
+      setResults(prevResults => [...prevResults, { url, result: resultEntry }]);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      setResults(prevResults => [...prevResults, { url, result: error.message }]);
+    });
+
+    if (i === urlArray.length - 1) {
+      setIsLoading(false);
     }
+  }
+}
+
 
     checkUrls(urlList);
   }
@@ -67,11 +73,23 @@ export default function FormUrlSubmit() {
           Submit
         </button>
       </form>
-      <div id="ret">
-        {results.map(({ url, result }) => (
-          <div key={url}>{`${url}\t${result}`}</div>
-        ))}
-      </div>
+	   <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} title="URL Check Results">
+        {isLoading ? (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <div className="list-group">
+            {results.map(({ url, result }) => (
+              <div key={url} className="list-group-item">
+                <strong>{url}:</strong> {result}
+              </div>
+            ))}
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

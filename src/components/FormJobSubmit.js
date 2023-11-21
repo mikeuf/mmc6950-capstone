@@ -75,20 +75,26 @@ export default function FormJobSubmit() {
         </button>
       </form>
       
-	   <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} title="Getting Job">
-        {isLoading ? (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
+<Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} title="Job Results">
+  {isLoading ? (
+    <div className="d-flex justify-content-center">
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  ) : (
+	   results.map(({ jobNumber, result }) => (
+      <div key={jobNumber} className="list-group">
+        <div className="list-group-item active">Job {jobNumber}</div>
+        {result.split(',').map((item, index) => (
+          <div key={index} className="list-group-item">
+            {item.trim()}
           </div>
-        ) : (
-          results.map(({ jobNumber, result }) => (
-            <div key={jobNumber}>{`${jobNumber}\t${result}`}</div>
-          ))
-        )}
-      </Modal>
-
+        ))}
+      </div>
+    ))
+  )}
+</Modal>
 	  </div>
   );
 }
