@@ -12,9 +12,11 @@
 	padding: 1rem;
 }
 
-button {
-    background: #ffffff !important;
-    color: #5eb2eb !important;
+.btn-light, .btn-outline-light {
     font-weight: bold !important;
-    border: 0 !important;
+}
+
+
+.btn-light {
+    color: #5eb2eb !important;
 }

@@ -53,10 +53,22 @@ export default function FormUrlSubmit() {
 
   return (
     <div>
+    <h2 className="display-3 text-center">Add Resources to Scan</h2>
+    <p className="lead text-center">Add URLs to check, with one line per entry.</p>
       <form onSubmit={submitList}>
+      <div className="text-center d-flex justify-content-evenly">
+        <button type="submit" id="submit-button" className="btn btn-light btn-lg mb-1">
+          Start Scanning
+        </button>
+        <button type="submit" id="upload-button" className="btn btn-outline-light btn-lg mb-1 border-3">
+          Upload List
+        </button>
+        <button type="submit" id="settings-button" className="btn btn-outline-light btn-lg mb-1 border-3">
+          Settings
+        </button>
+      </div>
         <div className="mb-3">
           <label htmlFor="resource-list" className="form-label">
-            Add URLs to check, with one line per entry.
           </label>
           <textarea
             id="resource-list"
@@ -69,9 +81,6 @@ export default function FormUrlSubmit() {
             required
           />
         </div>
-        <button type="submit" id="submit-button" className="btn btn-primary btn-sm mb-1">
-          Submit
-        </button>
       </form>
 	   <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} title="URL Check Results">
         {isLoading ? (
