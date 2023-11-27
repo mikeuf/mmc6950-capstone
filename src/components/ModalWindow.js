@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 
-const Modal = ({ show, onClose, title, children }) => {
+export default function Modal({ show, onClose, title, children }) {
   if (!show) {
     return null;
   }
@@ -34,7 +36,4 @@ const Modal = ({ show, onClose, title, children }) => {
       <div className="modal-backdrop show"></div>
     </div>
   );
-};
-
-export default Modal;
-
+}

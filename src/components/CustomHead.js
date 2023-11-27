@@ -1,7 +1,8 @@
 // components/CustomHead.js
+'use client';
 import Head from 'next/head';
 
-function CustomHead() {
+export default function CustomHead() {
   return (
     <Head>
       {/* Bootstrap */}
@@ -15,6 +16,4 @@ function CustomHead() {
     </Head>
   );
 }
-
-export default CustomHead;
 

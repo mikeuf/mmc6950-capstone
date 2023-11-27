@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Head from 'next/head';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../public/static/style.css';
 import NavBar from '../components/NavBar';
 import FormUrlSubmit from '../components/FormUrlSubmit';
 import FormJobSubmit from '../components/FormJobSubmit';
@@ -23,14 +20,11 @@ const [showFormSettings, setShowFormSettings] = useState(false);
 
 return (
 <>
-<Head>
-    <link href="https://use.typekit.net/cmn5cya.css" rel="stylesheet" type="text/css" />
-</Head>
 <NavBar />
 <div className="container-fluid" id="main-container-fluid">
     <div className="container" id="main-container">
         <div className="row">
-            <div className="col-12 col-md-10 col-lg-6">
+            <div className="col-12 col-md-10 col-lg-8">
                 {showFormUrlSubmit && <FormUrlSubmit onSettingsClick={toggleFormSettings} />}
                 {showFormJobSubmit && <FormJobSubmit />}
                 {showFormJobDestinationSubmit && <FormJobDestinationSubmit/>}
