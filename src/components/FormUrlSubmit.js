@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Modal from './ModalWindow.js';
 
-export default function FormUrlSubmit() {
+export default function FormUrlSubmit({ onSettingsClick }) {
   const [urlList, setUrlList] = useState("example.com\ninstagram.com\nfacebook.com\ngoogle.com\nmicrosoft.com");
   const [results, setResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -53,17 +53,17 @@ export default function FormUrlSubmit() {
 
   return (
     <div>
-    <h2 className="display-3 text-center">Add Resources to Scan</h2>
-    <p className="lead text-center">Add URLs to check, with one line per entry.</p>
+    <h2 className="display-4">Add Resources to Scan</h2>
+    <p className="lead">Add URLs to check, with one line per entry.</p>
       <form onSubmit={submitList}>
-      <div className="text-center d-flex justify-content-evenly">
-        <button type="submit" id="submit-button" className="btn btn-light btn-lg mb-1">
+      <div className="text-center d-flex justify-content-start">
+        <button type="submit" id="submit-button" className="btn btn-light me-3">
           Start Scanning
         </button>
-        <button type="submit" id="upload-button" className="btn btn-outline-light btn-lg mb-1 border-3">
+        <button type="button" id="upload-button" className="btn btn-outline-light border-3">
           Upload List
         </button>
-        <button type="submit" id="settings-button" className="btn btn-outline-light btn-lg mb-1 border-3">
+        <button type="button" id="settings-button" className="btn btn-outline-light border-3 ms-3" onClick={onSettingsClick}>
           Settings
         </button>
       </div>

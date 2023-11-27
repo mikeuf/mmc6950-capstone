@@ -10,6 +10,8 @@ function CustomHead() {
       {/* cross-fetch polyfill */}
       <script src="https://unpkg.com/cross-fetch/dist/browser-polyfill.js"></script>
       <link rel="stylesheet" href="/static/style.css" />
+      {/* Adobe Fonts */}
+	  <link rel="stylesheet" href="https://use.typekit.net/cmn5cya.css" />
     </Head>
   );
 }
