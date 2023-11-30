@@ -28,7 +28,7 @@ return (
                 {showFormUrlSubmit && <FormUrlSubmit onSettingsClick={toggleFormSettings} />}
                 {showFormJobSubmit && <FormJobSubmit />}
                 {showFormJobDestinationSubmit && <FormJobDestinationSubmit/>}
-                {showFormSettings && <FormSettings/>}
+		{showFormSettings && <FormSettings onSettingsClick={toggleFormSettings} />}
             </div>
         </div>
     </div>
