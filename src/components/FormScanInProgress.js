@@ -10,13 +10,19 @@ export default function FormScanInProgress({ urlList }) {
     useEffect(() => {
     const checkUrls = async (urls) => {
         setIsLoading(true);
-        const urlArray = urls.split('\n');
+            const urlArray = urls.split('\n').map(url => url.trim()); // Trim each URL
+
         const RATE_LIMIT_WAIT_TIME = 2000; // Adjust as needed
 
         for (const [index, url] of urlArray.entries()) {
+                    if (!url) continue; // Skip empty lines
+
             await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_WAIT_TIME * index));
             try {
-                const response = await fetch(`/api/add-test-result?url=${encodeURIComponent(url)}`);
+                            const encodedUrl = encodeURIComponent(url);
+
+                            const response = await fetch(`/api/add-test-result?url=${encodedUrl}`);
+
                 const data = await response.json();
                 let resultEntry = data.redirected
                     ? `Redirect (${data.url})`
@@ -59,6 +65,21 @@ export default function FormScanInProgress({ urlList }) {
 
     return (
         <div>
+            <h2 className="display-4">Scan in Progress</h2>
+            <p className="lead">This may take some time if you are scanning many resources.</p>
+            <form>
+                <div className="text-center d-flex justify-content-start">
+                    <button type="submit" id="pause-button" className="btn btn-light me-3">
+                        Pause
+                    </button>
+                    <button type="button" id="end-button" className="btn btn-outline-light border-3">
+        End
+                    </button>
+                    <button type="button" id="reset-button" className="btn btn-outline-light border-3 ms-3">
+                        Reset
+                    </button>
+                </div>
+        </form>
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <div className="spinner-border" role="status">
