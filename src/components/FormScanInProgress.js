@@ -8,66 +8,58 @@ export default function FormScanInProgress({ urlList }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-    const checkUrls = async (urls) => {
-        setIsLoading(true);
-            const urlArray = urls.split('\n').map(url => url.trim()); // Trim each URL
+        const checkUrls = async (urls) => {
+            setIsLoading(true);
+            const urlArray = urls.split('\n').map(url => url.trim());
+            const RATE_LIMIT_WAIT_TIME = 2000;
+            let tempResults = [];
 
-        const RATE_LIMIT_WAIT_TIME = 2000; // Adjust as needed
+            for (const [index, url] of urlArray.entries()) {
+                if (!url || tempResults.some(res => res.destination === url)) continue;
 
-        for (const [index, url] of urlArray.entries()) {
-                    if (!url) continue; // Skip empty lines
+                await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_WAIT_TIME * index));
 
-            await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_WAIT_TIME * index));
-            try {
-                            const encodedUrl = encodeURIComponent(url);
+                try {
+                    const encodedUrl = encodeURIComponent(url);
+                    const response = await fetch(`/api/add-test-result?url=${encodedUrl}`);
+                    const data = await response.json();
 
-                            const response = await fetch(`/api/add-test-result?url=${encodedUrl}`);
+                    let status = "Unresolvable";
+                    let details = "Failed to resolve";
 
-                const data = await response.json();
-                let resultEntry = data.redirected
-                    ? `Redirect (${data.url})`
-                    : `${data.http_status_code} ${data.server_response}`;
-
-                // Update the results state with each new result
-                setResults(prevResults => {
-                    // Check if result for this URL is already in the array
-                    const existingResult = prevResults.find(res => res.url === url);
-                    if (existingResult) {
-                        // Update existing result
-                        return prevResults.map(res => res.url === url ? { ...res, result: resultEntry } : res);
-                    } else {
-                        // Add new result
-                        return [...prevResults, { url, result: resultEntry }];
+                    if (data.http_status_code) {
+                        details = `HTTP ${data.http_status_code} - ${data.server_response}`;
+                        if (data.http_status_code === 200) {
+                            status = "Online";
+                        } else if (String(data.http_status_code).startsWith("4") || String(data.http_status_code).startsWith("5")) {
+                            status = "Online, Error";
+                        }
                     }
-                });
-            } catch (error) {
-                console.error('Error:', error);
-                setResults(prevResults => {
-                    // Similar check for error case
-                    const existingResult = prevResults.find(res => res.url === url);
-                    if (existingResult) {
-                        return prevResults.map(res => res.url === url ? { ...res, result: error.message } : res);
-                    } else {
-                        return [...prevResults, { url, result: error.message }];
-                    }
-                });
+
+                    const finalUrl = data.redirected ? data.url : url;
+                    const destination = finalUrl.replace(/^(https?:\/\/)/, '');
+
+                    tempResults.push({ destination, status, details });
+                    setResults([...tempResults]); // Update state with tempResults
+                } catch (error) {
+                    console.error('Error:', error);
+                    const destination = url.replace(/^(https?:\/\/)/, '');
+                    tempResults.push({ destination, status: "Unresolvable", details: error.message });
+                    setResults([...tempResults]); // Update state with tempResults
+                }
             }
-        }
 
-        setIsLoading(false);
-    };
+            setIsLoading(false);
+        };
 
-    checkUrls(urlList);
-}, [urlList]);
-
-
-    const formattedResults = results.map(({ url, result }) => `${url}: ${result}`).join('\n');
+        checkUrls(urlList);
+    }, [urlList]);
 
     return (
         <div>
             <h2 className="display-4">Scan in Progress</h2>
             <p className="lead">This may take some time if you are scanning many resources.</p>
-            <form>
+            <form className="mb-4">
                 <div className="text-center d-flex justify-content-start">
                     <button type="submit" id="pause-button" className="btn btn-light me-3">
                         Pause
@@ -80,20 +72,33 @@ export default function FormScanInProgress({ urlList }) {
                     </button>
                 </div>
         </form>
-            {isLoading ? (
+          {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <div className="spinner-border" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
                 </div>
             ) : null}
-            <textarea
-                className="form-control"
-                rows="10"
-                readOnly
-                value={formattedResults}
-            ></textarea>
+        <div className="mb-3 table-wrapper">
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {results.map(({ destination, status, details }, index) => (
+                        <tr key={index}>
+                            <td>{destination}</td>
+                            <td>{status}</td>
+                            <td>{details}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
         </div>
     );
 }
-
