@@ -1,9 +1,9 @@
-// FormScanInProgress.js
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 
-export default function FormScanInProgress({ urlList }) {
+export default function FormScanInProgress({ urlList, onScanComplete }) {
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -40,20 +40,21 @@ export default function FormScanInProgress({ urlList }) {
                     const destination = finalUrl.replace(/^(https?:\/\/)/, '');
 
                     tempResults.push({ destination, status, details });
-                    setResults([...tempResults]); // Update state with tempResults
+                    setResults([...tempResults]); 
                 } catch (error) {
                     console.error('Error:', error);
                     const destination = url.replace(/^(https?:\/\/)/, '');
                     tempResults.push({ destination, status: "Unresolvable", details: error.message });
-                    setResults([...tempResults]); // Update state with tempResults
+                    setResults([...tempResults]); 
                 }
             }
 
             setIsLoading(false);
+            onScanComplete(tempResults); 
         };
 
         checkUrls(urlList);
-    }, [urlList]);
+    }, [urlList, onScanComplete]); 
 
     return (
         <div>
@@ -65,40 +66,41 @@ export default function FormScanInProgress({ urlList }) {
                         Pause
                     </button>
                     <button type="button" id="end-button" className="btn btn-outline-light border-3">
-        End
+                        End
                     </button>
                     <button type="button" id="reset-button" className="btn btn-outline-light border-3 ms-3">
                         Reset
                     </button>
                 </div>
-        </form>
-          {isLoading ? (
+            </form>
+            {isLoading ? (
                 <div className="d-flex justify-content-center">
                     <div className="spinner-border" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
                 </div>
             ) : null}
-        <div className="mb-3 table-wrapper">
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Destination</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {results.map(({ destination, status, details }, index) => (
-                        <tr key={index}>
-                            <td>{destination}</td>
-                            <td>{status}</td>
-                            <td>{details}</td>
+            <div className="mb-3 table-wrapper">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Details</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {results.map(({ destination, status, details }, index) => (
+                            <tr key={index}>
+                                <td>{destination}</td>
+                                <td>{status}</td>
+                                <td>{details}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
+

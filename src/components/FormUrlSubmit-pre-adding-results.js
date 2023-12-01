@@ -1,15 +1,11 @@
-
 'use client';
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import FormScanInProgress from './FormScanInProgress'; 
-import FormScanResults from './FormScanResults'; 
 
 export default function FormUrlSubmit({ onSettingsClick }) {
     const [urlList, setUrlList] = useState("example.com\ninstagram.com\nfacebook.com\ngoogle.com\nmicrosoft.com");
     const [startScanning, setStartScanning] = useState(false);
-    const [scanComplete, setScanComplete] = useState(false);
-    const [scanResults, setScanResults] = useState([]);
     const fileInputRef = useRef(null);
 
     const handleUploadClick = () => {
@@ -30,22 +26,10 @@ export default function FormUrlSubmit({ onSettingsClick }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         setStartScanning(true);
-        setScanComplete(false); 
     };
 
-    const handleScanComplete = useCallback((results) => {
-        console.log("Scan complete, results:", results);
-        setScanResults(results);
-        setScanComplete(true);
-    }, []); 
-
-
-    if (startScanning && !scanComplete) {
-        return <FormScanInProgress urlList={urlList} onScanComplete={handleScanComplete} />;
-    }
-
-    if (scanComplete) {
-        return <FormScanResults results={scanResults} />;
+    if (startScanning) {
+        return <FormScanInProgress urlList={urlList} />;
     }
 
     return (
