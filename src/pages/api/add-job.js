@@ -11,8 +11,8 @@ export default async function handler(req, res) {
   }
   try {
     const jobResult = await query(
-      'INSERT INTO :SCHEMA.job DEFAULT VALUES RETURNING job_id'
-    );
+      'INSERT INTO :SCHEMA.job (start_timestamp) VALUES (NOW()) RETURNING job_id;'
+);
     const jobId = jobResult.rows[0].job_id;
     const queryString = `
       INSERT INTO :SCHEMA.job_destination (job_id, destination_id)
