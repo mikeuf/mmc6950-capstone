@@ -1,9 +1,7 @@
 'use client';
-
 import React, { useState, useRef, useCallback } from 'react';
 import FormScanInProgress from './FormScanInProgress';
 import FormScanResults from './FormScanResults';
-
 export default function FormUrlSubmit({ onSettingsClick }) {
     const [urlList, setUrlList] = useState("example.com\ninstagram.com\nfacebook.com\ngoogle.com\nmicrosoft.com");
     const [jobId, setJobId] = useState(null);
@@ -11,12 +9,9 @@ export default function FormUrlSubmit({ onSettingsClick }) {
     const [scanComplete, setScanComplete] = useState(false);
     const [scanResults, setScanResults] = useState([]);
     const fileInputRef = useRef(null);
-
-
     const handleUploadClick = () => {
         fileInputRef.current.click();
     };
-
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -27,12 +22,10 @@ export default function FormUrlSubmit({ onSettingsClick }) {
             reader.readAsText(file);
         }
     };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         setStartScanning(true);
         setScanComplete(false);
-
         const urlArray = urlList.split('\n')
             .map(url => url.trim())
             .filter(url => url)
@@ -49,7 +42,7 @@ export default function FormUrlSubmit({ onSettingsClick }) {
                 }
             })
             .filter(url => url);
-console.log(urlArray);
+        console.log(urlArray);
         try {
             const destinationIds = [];
             for (const url of urlArray) {
@@ -64,42 +57,39 @@ console.log(urlArray);
                 const destData = await destResponse.json();
                 destinationIds.push(destData.destination_id);
             }
-
             const jobResponse = await fetch('/api/add-job', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ destinationIds }),
             });
-
             if (!jobResponse.ok) {
                 throw new Error(`HTTP error! status: ${jobResponse.status}`);
             }
-
             const jobData = await jobResponse.json();
             setJobId(jobData[0].job_id);
         } catch (error) {
             console.error('Error submitting job and destinations:', error);
         }
     };
-
     const handleScanComplete = useCallback((results) => {
         console.log("Scan complete, results:", results);
         setScanResults(results);
         setScanComplete(true);
     }, []);
+   const handleScanPaused = useCallback((partialResults) => {
+        console.log("Scan paused, partial results:", partialResults);
+        setScanResults(partialResults);
+    }, []);
 console.log("startScanning && !scanComplete && jobId");
-
 console.log("startScanning: " + startScanning);
 console.log("scanComplete: " + scanComplete);
 console.log("jobId: " + jobId);
     if (startScanning && !scanComplete && jobId) {
-        return <FormScanInProgress jobId={jobId} onScanComplete={handleScanComplete} />;
+        return <FormScanInProgress jobId={jobId} onScanComplete={handleScanComplete} onScanPaused={handleScanPaused} />;
     }
-
     if (scanComplete) {
         return <FormScanResults results={scanResults} />;
     }
-
     return (
         <div>
             <h2 className="display-4">Add Resources to Scan</h2>
@@ -139,4 +129,3 @@ console.log("jobId: " + jobId);
         </div>
     );
 }
-
