@@ -1,13 +1,20 @@
 import { query } from '../../../lib/db';
 import { useRouter } from 'next/router';
+
 export default function JobDestinations({ destinations, error }) {
   const router = useRouter();
+
+  // If the page is in a "fallback" state, show a loading message
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
+
+  // If there's an error, show an error message
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  // If there's no error, display the destinations
   return (
     <div>
       <h1>Destinations for Job ID: {router.query.job_id}</h1>
@@ -21,37 +28,49 @@ export default function JobDestinations({ destinations, error }) {
     </div>
   );
 }
+
 export async function getServerSideProps(context) {
   const { req, res, params } = context;
   const { job_id } = params;
+
   const sqlString = `
-    SELECT d.destination_id
-    FROM :SCHEMA.job j
-    JOIN :SCHEMA.job_destination jd ON j.job_id = jd.job_id
-    JOIN :SCHEMA.destination d ON jd.destination_id = d.destination_id
-    WHERE j.job_id = $1
+        SELECT destination.*
+FROM :SCHEMA.job
+JOIN :SCHEMA.job_destination ON :SCHEMA.job.job_id = :SCHEMA.job_destination.job_id
+JOIN :SCHEMA.destination ON :SCHEMA.job_destination.destination_id = :SCHEMA.destination.destination_id
+WHERE :SCHEMA.job.job_id = $1
   `;
+  
+  console.log('Executing SQL:', sqlString, 'with job_id:', job_id);
+
   try {
     const result = await query(sqlString, [job_id]);
-    const destinationIds = result.rows.map(row => row.destination_id);
+    const destinations = result.rows;
+
+    console.log('Results:', destinations);
+
+    // Check the 'Accept' header to determine the response type
     if (req.headers.accept.includes('application/json')) {
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ destinationIds }));
-      return { props: {} }; 
+      res.end(JSON.stringify({ destinations }));
+      return; // End here
     }
+
     return {
       props: {
-        destinations: result.rows
+        destinations
       }
     };
   }
   catch (error) {
     console.error(error);
     return {
-      props: {
-        error: error.message,
-        destinations: []
-      }
+        props: {
+            error: error.message,
+            destinations: []
+        }
     };
   }
 }
+
+

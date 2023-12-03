@@ -12,7 +12,6 @@ export default function FormUrlSubmit({ onSettingsClick }) {
     const [scanResults, setScanResults] = useState([]);
     const fileInputRef = useRef(null);
 
-
     const handleUploadClick = () => {
         fileInputRef.current.click();
     };
@@ -28,28 +27,30 @@ export default function FormUrlSubmit({ onSettingsClick }) {
         }
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setStartScanning(true);
-        setScanComplete(false);
+	const handleSubmit = async (event) => {
+    event.preventDefault();
+    setStartScanning(true);
+    setScanComplete(false);
 
-        const urlArray = urlList.split('\n')
-            .map(url => url.trim())
-            .filter(url => url)
-            .map(url => {
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'http://' + url;
-                }
-                try {
-                    const urlParts = new URL(url);
-                    return { hostname: urlParts.hostname, path: urlParts.pathname };
-                } catch (error) {
-                    console.error('Invalid URL:', url, error);
-                    return null;
-                }
-            })
-            .filter(url => url);
-console.log(urlArray);
+    const urlArray = urlList.split('\n')
+        .map(url => url.trim()) // Trim whitespace
+        .filter(url => url) // Filter out empty strings
+        .map(url => {
+            // Prepend 'http://' if the URL does not start with 'http://' or 'https://'
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'http://' + url;
+            }
+            try {
+                const urlParts = new URL(url);
+                return { hostname: urlParts.hostname, path: urlParts.pathname };
+            } catch (error) {
+                console.error('Invalid URL:', url, error);
+                return null;
+            }
+        })
+        .filter(url => url); // Filter out null values (invalid URLs)
+
+
         try {
             const destinationIds = [];
             for (const url of urlArray) {
@@ -76,7 +77,7 @@ console.log(urlArray);
             }
 
             const jobData = await jobResponse.json();
-            setJobId(jobData[0].job_id);
+            setJobId(jobData[0].job_id); // Extract job_id from the first item in the response
         } catch (error) {
             console.error('Error submitting job and destinations:', error);
         }
@@ -87,11 +88,7 @@ console.log(urlArray);
         setScanResults(results);
         setScanComplete(true);
     }, []);
-console.log("startScanning && !scanComplete && jobId");
 
-console.log("startScanning: " + startScanning);
-console.log("scanComplete: " + scanComplete);
-console.log("jobId: " + jobId);
     if (startScanning && !scanComplete && jobId) {
         return <FormScanInProgress jobId={jobId} onScanComplete={handleScanComplete} />;
     }

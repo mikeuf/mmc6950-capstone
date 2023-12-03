@@ -1,3 +1,5 @@
+
+
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
@@ -6,12 +8,10 @@ import FormScanResults from './FormScanResults';
 
 export default function FormUrlSubmit({ onSettingsClick }) {
     const [urlList, setUrlList] = useState("example.com\ninstagram.com\nfacebook.com\ngoogle.com\nmicrosoft.com");
-    const [jobId, setJobId] = useState(null);
     const [startScanning, setStartScanning] = useState(false);
     const [scanComplete, setScanComplete] = useState(false);
     const [scanResults, setScanResults] = useState([]);
     const fileInputRef = useRef(null);
-
 
     const handleUploadClick = () => {
         fileInputRef.current.click();
@@ -33,24 +33,22 @@ export default function FormUrlSubmit({ onSettingsClick }) {
         setStartScanning(true);
         setScanComplete(false);
 
-        const urlArray = urlList.split('\n')
-            .map(url => url.trim())
-            .filter(url => url)
-            .map(url => {
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'http://' + url;
-                }
-                try {
-                    const urlParts = new URL(url);
-                    return { hostname: urlParts.hostname, path: urlParts.pathname };
-                } catch (error) {
-                    console.error('Invalid URL:', url, error);
-                    return null;
-                }
-            })
-            .filter(url => url);
-console.log(urlArray);
+        const urlArray = urlList.split('\n').map(url => {
+            
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'http://' + url;
+            }
+            try {
+                const urlParts = new URL(url);
+                return { hostname: urlParts.hostname, path: urlParts.pathname };
+            } catch (error) {
+                console.error('Invalid URL:', url, error);
+                return null;
+            }
+        }).filter(url => url && url.hostname);
+
         try {
+            
             const destinationIds = [];
             for (const url of urlArray) {
                 const destResponse = await fetch('/api/add-destination', {
@@ -65,6 +63,7 @@ console.log(urlArray);
                 destinationIds.push(destData.destination_id);
             }
 
+            
             const jobResponse = await fetch('/api/add-job', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -75,8 +74,10 @@ console.log(urlArray);
                 throw new Error(`HTTP error! status: ${jobResponse.status}`);
             }
 
+            
             const jobData = await jobResponse.json();
-            setJobId(jobData[0].job_id);
+            console.log('Job creation result:', jobData);
+
         } catch (error) {
             console.error('Error submitting job and destinations:', error);
         }
@@ -87,13 +88,9 @@ console.log(urlArray);
         setScanResults(results);
         setScanComplete(true);
     }, []);
-console.log("startScanning && !scanComplete && jobId");
 
-console.log("startScanning: " + startScanning);
-console.log("scanComplete: " + scanComplete);
-console.log("jobId: " + jobId);
-    if (startScanning && !scanComplete && jobId) {
-        return <FormScanInProgress jobId={jobId} onScanComplete={handleScanComplete} />;
+    if (startScanning && !scanComplete) {
+        return <FormScanInProgress urlList={urlList} onScanComplete={handleScanComplete} />;
     }
 
     if (scanComplete) {
