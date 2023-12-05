@@ -93,7 +93,7 @@ console.log("jobId: " + jobId);
     return (
         <div>
             <h2 className="display-4">Add Resources to Scan</h2>
-            <p className="lead">Add URLs to check, with one line per entry.</p>
+            <p className="lead" id="textarea-description">Add URLs to check, with one line per entry.</p>
             <form onSubmit={handleSubmit}>
                 <div className="text-center d-flex justify-content-start">
                     <button type="submit" id="submit-button" className="btn btn-light me-3">
@@ -118,6 +118,7 @@ console.log("jobId: " + jobId);
                         id="resource-list"
                         name="resource-list"
                         className="form-control"
+	                aria-describedby="textarea-description"
                         rows="10"
                         cols="50"
                         value={urlList}

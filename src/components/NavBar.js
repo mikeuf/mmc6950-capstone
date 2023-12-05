@@ -5,7 +5,7 @@ function NavBar() {
     <nav className="navbar navbar-light">
       <div className="container">
         <a className="navbar-brand" href="/">
-	  <img src="/static/assets/logo-4x.png" alt="Resource Scanner" width="300px" />
+	  <img src="/static/assets/logo-4x.png" alt="Resource Scanner" width="301px" height="36px" />
         </a>
       </div>
     </nav>

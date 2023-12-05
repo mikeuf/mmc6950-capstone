@@ -45,14 +45,20 @@ export default function FormScanInProgress({ jobId, onScanComplete, onScanPaused
 						continue;
 					}
 					const scanResult = await scanResponse.json();
+                        if (destination.path === "/") {
+                            destination.path = ""
+                        }
 					setResults(currentResults => [...currentResults, {
-						destination: `http://${destination.hostname}${destination.path || ''}`,
+						destination: `${destination.hostname}${destination.path || ''}`,
 						status: scanResult.http_status_code === 200 ? "Online" : "Error",
 						details: `HTTP ${scanResult.http_status_code} - ${scanResult.server_response}`
 					}]);
+                        if (destination.path === "/") {
+                            destination.path = ""
+                        }
 					accumulatedResults.push({
 						destinationId: destinationId,
-						destination: `http://${destination.hostname}${destination.path || ''}`,
+						destination: `${destination.hostname}${destination.path || ''}`,
 						status: scanResult.http_status_code === 200 ? "Online" : "Error",
 						details: `HTTP ${scanResult.http_status_code} - ${scanResult.server_response}`
 					});

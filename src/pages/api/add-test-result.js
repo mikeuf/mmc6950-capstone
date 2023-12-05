@@ -5,7 +5,7 @@ import { promisify } from 'util';
 const resolve4Async = promisify(dns.resolve4);
 export default async function handler(req, res) {
     try {
-        const { destination_id } = req.query; 
+        const { destination_id } = req.query;
         const destinationResult = await query(
             'SELECT hostname FROM :SCHEMA.destination WHERE destination_id = $1',
             [destination_id]
@@ -14,20 +14,28 @@ export default async function handler(req, res) {
         if (!hostname) {
             return res.status(404).json({ message: "Hostname not found for the given destination_id" });
         }
-        const url = `http://${hostname}`; 
-        let dns_response;
+        const url = `https://${hostname}`;
+        let dns_response, http_status_code, server_response, responseError = false;
         try {
             const addresses = await resolve4Async(new URL(url).hostname);
-            dns_response = addresses[0]; 
+            dns_response = addresses[0];
         } catch (error) {
-            dns_response = error.message; 
+            dns_response = error.message;
         }
-        const response = await fetch(url);
-        const statusCode = response.status;
+        try {
+            const response = await fetch(url);
+            http_status_code = response.status.toString();
+            server_response = response.statusText;
+            if (http_status_code.startsWith('5')) {
+                server_response = `HTTP 5xx Error: ${server_response}`;
+                responseError = false; 
+            }
+        } catch (error) {
+            server_response = error.message;
+            responseError = false;
+        }
         const date = new Date();
         const timestampString = date.toISOString();
-        const http_status_code = statusCode.toString();
-        const server_response = response.statusText;
         const result = await query(
             'INSERT INTO :SCHEMA.test_result (dns_response, http_status_code, server_response, test_timestamp, destination_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
             [dns_response, http_status_code, server_response, timestampString, destination_id]
@@ -38,6 +46,6 @@ export default async function handler(req, res) {
         res.json(result.rows[0]);
     } catch (error) {
         console.error('API Error:', error);
-        res.status(500).json({ message: 'Error processing request', error: error.message });
+        res.status(200).json(result.rows[0]);
     }
 }
