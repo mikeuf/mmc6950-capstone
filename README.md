@@ -20,19 +20,19 @@ Resource Scanner can accept any valid URL. Here are some examples:
 
 The URLs can be separated into different lines, or delimited by commas or tabs.
 
-2. Click the *Start Scanning* button.
+2. Click the **Start Scanning** button.
 
 ### Scanning in Progress
 Resource Scaner will test the network connectivity of each destination. The results are updated after each URL is tested, allowing you monitor the scan in real-time.
 
 #### Pausing a Scan
-You can stop a running scan by clicking the Pause button.
+You can stop a running scan by clicking the **Pause** button.
 
 ### Scan Results
-When the scan job is complete, the results are displayed in a table. Each scanned URL is listed with the result of the test. Most tests should return the status code HTTP 200. This is a standard code that means "OK" (no errors). The results are separated into a Status and Details column. The Status values are usually brief summaries. Details contain more descriptive information that may assist with troubleshooting. If a scan returns an error, the exact text of the error may be included.
+When the scan job is complete, the results are displayed in a table. Each scanned URL is listed with the result of the test. Most tests should return the status code HTTP 200. This is a standard code that means "OK" (no errors). The results are separated into a **Status** and **Details** column. A status is usually a status code or a brief summary. Details contain more descriptive information that may assist with troubleshooting. If a scan returns an error, the exact text of the error may be included.
 
 #### Downloading Reports
-The scan results can be download by clicking the "Download Report" button. The file is a tab-separated file (.tsv) which can be imported into Excel or viewed with a text editor.
+The scan results can be download by clicking the **Download Report** button. The file is a tab-separated file (.tsv) which can be imported into Excel or viewed with a text editor.
 
 ### Destinations
 The results of every scan t
