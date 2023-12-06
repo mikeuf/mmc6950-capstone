@@ -1,5 +1,5 @@
 // components/NavBar.js
-function NavBar({onJobHistoryClick}) {
+function NavBar({onJobHistoryClick, onDestinationsClick}) {
 return (
 <div className="container-fluid">
     <nav className="navbar navbar-expand navbar-light">
@@ -11,6 +11,9 @@ return (
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
                         <a className="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" onClick={onDestinationsClick} href="#">Destinations</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" onClick={onJobHistoryClick} href="#">Job History</a>

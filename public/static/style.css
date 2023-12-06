@@ -34,6 +34,21 @@ border: 0.5rem solid #ebc25e;
 border-radius: 1rem;
 }
 
+.table-constrained {
+word-break: break-all;
+}
+
+.col-id {
+    width: 10%;
+    max-width: 32px;
+}
+
+
+.col-url {
+    width: 45;
+    max-width: 400px;
+}
+
 
 .hidden {
   visibility: hidden;
