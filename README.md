@@ -34,7 +34,9 @@ When the scan job is complete, the results are displayed in a table. Each scanne
 #### Downloading Reports
 The scan results can be download by clicking the **Download Report** button. The file is a tab-separated file (.tsv) which can be imported into Excel or viewed with a text editor.
 
-### Destinations
-The result of every scan test is automatically saved. 
+### Destinations and Job History
+The result of every scan test is automatically saved. To review a list of all URLs that have been tested, click the Destinations link in the header near the top of the site. The destinations are listed along with the their most recent status. This can be downloaded as a tab-separated value (.tsv) file by clicking the **Download Report** button.
+
+
 
 
