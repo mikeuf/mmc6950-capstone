@@ -91,7 +91,7 @@ export default function FormScanInProgress({ jobId, onScanComplete, onScanPaused
 	};
 	return (
 	<div>
-		<h2 className="display-4">Scan in Progress</h2>
+		<h2 className="display-5">Scan in Progress</h2>
 		<p className="lead">This may take some time if you are scanning many resources.</p>
 		<form className="mb-4">
 			<div className="text-center d-flex justify-content-start">

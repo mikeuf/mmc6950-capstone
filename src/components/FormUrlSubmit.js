@@ -3,7 +3,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import FormScanInProgress from './FormScanInProgress';
 import FormScanResults from './FormScanResults';
 export default function FormUrlSubmit({ onSettingsClick }) {
-    const [urlList, setUrlList] = useState("example.com\ninstagram.com\nfacebook.com\ngoogle.com\nmicrosoft.com");
+    const [urlList, setUrlList] = useState([]);
     const [jobId, setJobId] = useState(null);
     const [startScanning, setStartScanning] = useState(false);
     const [scanComplete, setScanComplete] = useState(false);
@@ -26,7 +26,7 @@ export default function FormUrlSubmit({ onSettingsClick }) {
         event.preventDefault();
         setStartScanning(true);
         setScanComplete(false);
-        const urlArray = urlList.split('\n')
+        const urlArray = urlList.split(/[\n\t,]+/)
             .map(url => url.trim())
             .filter(url => url)
             .map(url => {
@@ -92,14 +92,14 @@ console.log("jobId: " + jobId);
     }
     return (
         <div>
-            <h2 className="display-4">Add Resources to Scan</h2>
-            <p className="lead" id="textarea-description">Add URLs to check, with one line per entry.</p>
+            <h2 className="display-5">Add Resources to Scan</h2>
+            <p className="lead" id="textarea-description">Add a list of URLs to check and click Start Scan.</p>
             <form onSubmit={handleSubmit}>
                 <div className="text-center d-flex justify-content-start">
                     <button type="submit" id="submit-button" className="btn btn-light me-3">
                         Start Scanning
                     </button>
-                    <button type="button" id="upload-button" className="btn btn-outline-light border-3" onClick={handleUploadClick}>
+                    <button type="button" id="upload-button" className="btn btn-outline-light border-2" onClick={handleUploadClick}>
                         Upload List
                     </button>
                     <input
@@ -108,9 +108,6 @@ console.log("jobId: " + jobId);
                         ref={fileInputRef}
                         onChange={handleFileChange}
                     />
-                    <button type="button" id="settings-button" className="btn btn-outline-light border-3 ms-3" onClick={onSettingsClick}>
-                        Settings
-                    </button>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="resource-list" className="form-label"></label>
@@ -121,6 +118,7 @@ console.log("jobId: " + jobId);
 	                aria-describedby="textarea-description"
                         rows="10"
                         cols="50"
+                        placeholder="Examples: example.com, https://example.com, example.com/path, my.yahoo.com"
                         value={urlList}
                         onChange={(e) => setUrlList(e.target.value)}
                         required

@@ -19,14 +19,14 @@ export default function FormScanResults({ results }) {
     };
     return (
     <div>
-        <h2 className="display-4">Scan Results</h2>
+        <h2 className="display-5">Scan Results</h2>
         <p className="lead">View the summary below or download a detailed report.</p>
         <form className="mb-4">
             <div className="text-center d-flex justify-content-start">
                 <button type="button" id="download-button" className="btn btn-light me-3" onClick={downloadReport}>
                     Download Report
                 </button>
-                <a href="/" id="restart-button" className="btn btn-outline-light border-3" role="button">
+                <a href="/" id="restart-button" className="btn btn-outline-light border-2" role="button">
                     Restart
                 </a>
             </div>

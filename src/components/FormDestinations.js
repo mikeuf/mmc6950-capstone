@@ -53,11 +53,11 @@ useEffect(() => {
     console.log("Destinations:", destinationData); 
     return (
     <div>
-        <h2 className="display-4">Destinations</h2>
+        <h2 className="display-5">Destinations</h2>
         <p className="lead">Here is a list of all of the destinations tested.</p>
         <form className="mb-4">
             <div className="text-center d-flex justify-content-start">
-                <a href="/" id="start-new-job-button" className="btn btn-light border-3" role="button">
+                <a href="/" id="start-new-job-button" className="btn btn-light border-2" role="button">
                     Start New Job
                 </a>
             </div>

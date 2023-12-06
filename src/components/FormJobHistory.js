@@ -26,7 +26,7 @@ export default function FormJobHistory() {
     console.log("History Data:", historyData); // Log the history data
     return (
     <div>
-        <h2 className="display-4">Job History</h2>
+        <h2 className="display-5">Job History</h2>
         <p className="lead">Here are the most recent jobs.</p>
         <form className="mb-4">
             <div className="text-center d-flex justify-content-start">

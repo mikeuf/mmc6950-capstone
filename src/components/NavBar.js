@@ -1,7 +1,7 @@
 // components/NavBar.js
 function NavBar({onJobHistoryClick, onDestinationsClick}) {
 return (
-<div className="container-fluid">
+<div className="container-fluid bg-light">
     <nav className="navbar navbar-expand navbar-light">
         <div className="container">
             <a className="navbar-brand" href="/">
