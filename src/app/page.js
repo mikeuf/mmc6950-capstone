@@ -29,7 +29,7 @@ return (
 <div className="container-fluid" id="main-container-fluid">
     <div className="container" id="main-container">
         <div className="row">
-            <div className="col-12 col-xl-10">
+            <div className="col-12 col-xl-10 mt-2">
                 {showFormUrlSubmit && <FormUrlSubmit/>}
                 {showFormJobHistory && <FormJobHistory/>}
                 {showFormDestinations && <FormDestinations/>}

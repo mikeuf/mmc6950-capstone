@@ -2,7 +2,22 @@ import React, { useState, useEffect } from 'react';
 export default function FormDestinations() {
     const [destinationData, setDestinationData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
-
+const downloadReport = () => {
+    const tsvContent = destinationData.map(({ destination_id, hostname, path, http_status_code, server_response, test_timestamp }) => 
+        [destination_id, hostname, path, http_status_code, server_response, formatDate(test_timestamp)].join('\t')
+    ).join('\n');
+    const tsvHeader = "Destination ID\tHostname\tPath\tHTTP Status Code\tServer Response\tTest Timestamp\n";
+    const tsvFile = tsvHeader + tsvContent;
+    const blob = new Blob([tsvFile], { type: 'text/tab-separated-values;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = "destination-status.tsv";
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
 const fetchDestinationStatus = async (destinationId) => {
     try {
         const response = await fetch(`/api/destination/${destinationId}/status`, {
@@ -36,7 +51,6 @@ useEffect(() => {
                 return { ...destination, ...status };
             }));
             setDestinationData(combinedData);
-
     setIsLoading(false);
         } catch (error) {
             console.error('Error getting destinations:', error);
@@ -48,49 +62,49 @@ useEffect(() => {
         const date = new Date(isoString);
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
     };
-
     return (
-    <div>
-        <h2 className="display-5">Destinations</h2>
-        <p className="lead">Here is a list of all of the destinations tested.</p>
-        <form className="mb-4">
-            <div className="text-center d-flex justify-content-start">
-                <a href="/" id="start-new-job-button" className="btn btn-light border-2" role="button">
-                    Start New Job
-                </a>
-            </div>
-        </form>
-        <div className="mb-3 table-wrapper">
-            <div className="table-responsive">
-                <table className="table table-constrained">
-                    <thead>
-                        <tr>
-                            <th scope="col" className="col-url">URL</th>
-                            <th scope="col" className="col-url">Status</th>
-                            <th scope="col" className="col-other">Last Updated</th>
-                        </tr>
-                    </thead>
-<tbody>
-    {Array.isArray(destinationData) && destinationData.map((destination, index) => (
-        <tr key={index}>
-            <td className="col-url">{destination.hostname}{destination.path}</td>
-            <td className="col-other">{destination.http_status_code} {destination.server_response}</td>
-            <td className="col-other">{formatDate(destination.test_timestamp)}</td>
-        </tr>
-    ))}
-</tbody>
-                </table>
-            </div>
-
-		{ isLoading && (
-		<div className="d-flex justify-content-center">
-			<div className="spinner-border" role="status">
-				<span className="visually-hidden">Loading...</span>
+	<div>
+		<h2 className="display-5">Destinations</h2>
+		<p className="lead">Here is a list of all of the destinations tested.</p>
+		<form className="mb-4">
+			<div className="text-center d-flex justify-content-start">
+				<button type="button" id="download-button" className="btn btn-light me-3" onClick={downloadReport}>
+					Download Report
+				</button>
+				<a href="/" id="start-new-job-button" className="btn btn-light border-2" role="button">
+					Start New Job
+				</a>
 			</div>
+		</form>
+		<div className="mb-3 table-wrapper">
+			<div className="table-responsive">
+				<table className="table table-constrained">
+					<thead>
+						<tr>
+							<th scope="col" className="col-url">URL</th>
+							<th scope="col" className="col-url">Status</th>
+							<th scope="col" className="col-other">Last Updated</th>
+						</tr>
+					</thead>
+					<tbody>
+						{Array.isArray(destinationData) && destinationData.map((destination, index) => (
+						<tr key={index}>
+							<td className="col-url">{destination.hostname}{destination.path}</td>
+							<td className="col-other">{destination.http_status_code} {destination.server_response}</td>
+							<td className="col-other">{formatDate(destination.test_timestamp)}</td>
+						</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			{ isLoading && (
+			<div className="d-flex justify-content-center">
+				<div className="spinner-border" role="status">
+					<span className="visually-hidden">Loading...</span>
+				</div>
+			</div>
+			)}
 		</div>
-		)}
-
-        </div>
-    </div>
+	</div>
     );
 }
