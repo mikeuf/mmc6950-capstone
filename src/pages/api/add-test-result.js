@@ -26,6 +26,10 @@ export default async function handler(req, res) {
             const response = await fetch(url);
             http_status_code = response.status.toString();
             server_response = response.statusText;
+            if (http_status_code.startsWith('4')) {
+                server_response = `HTTP 4xx Error: ${server_response}`;
+                responseError = false; 
+            }
             if (http_status_code.startsWith('5')) {
                 server_response = `HTTP 5xx Error: ${server_response}`;
                 responseError = false; 
