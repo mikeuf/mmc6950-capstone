@@ -45,8 +45,14 @@ word-break: break-all;
 
 
 .col-url {
-    width: 45;
+    width: 50;
     max-width: 400px;
+}
+
+
+.col-other {
+    width: 20;
+    max-width: 200px;
 }
 
 

@@ -1,7 +1,26 @@
 import React, { useState, useEffect } from 'react';
 export default function FormDestinations() {
     const [destinationData, setDestinationData] = useState([]);
-	useEffect(() => {
+
+const fetchDestinationStatus = async (destinationId) => {
+    try {
+        const response = await fetch(`/api/destination/${destinationId}/status`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data.destinationStatus;
+    } catch (error) {
+        console.error('Error getting destination status:', error);
+        return null;
+    }
+};
+
+
+useEffect(() => {
     const fetchData = async () => {
         try {
             const destinationResponse = await fetch('/api/get-destinations', {
@@ -11,14 +30,22 @@ export default function FormDestinations() {
             if (!destinationResponse.ok) {
                 throw new Error(`HTTP error! status: ${destinationResponse.status}`);
             }
-            const jobs = await destinationResponse.json();
-            setDestinationData(jobs); 
+            const destinations = await destinationResponse.json();
+
+            // Fetch and combine the status for each destination
+            const combinedData = await Promise.all(destinations.map(async (destination) => {
+                const status = await fetchDestinationStatus(destination.destination_id);
+                return { ...destination, ...status };
+            }));
+
+            setDestinationData(combinedData);
         } catch (error) {
             console.error('Error getting destinations:', error);
         }
     };
     fetchData();
 }, []);
+
     const formatDate = (isoString) => {
         const date = new Date(isoString);
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
@@ -41,19 +68,21 @@ export default function FormDestinations() {
                     <thead>
                         <tr>
                             <th scope="col" className="col-id">ID</th>
-                            <th scope="col" className="col-url">Hostname/Domain</th>
-                            <th scope="col" className="col-url">URL Path</th>
+                            <th scope="col" className="col-url">URL</th>
+                            <th scope="col" className="col-other">Status</th>
+                            <th scope="col" className="col-other">Last Updated</th>
                         </tr>
                     </thead>
-                    <tbody>
-                                {Array.isArray(destinationData) && destinationData.map((destination, index) => (
-                                <tr key={index}>
-                                    <td className="col-id">{destination.destination_id}</td>
-                                    <td className="col-url">{destination.hostname}</td>
-                                    <td className="col-url">{destination.path}</td>
-                                </tr>
-                                ))}
-                    </tbody>
+<tbody>
+    {Array.isArray(destinationData) && destinationData.map((destination, index) => (
+        <tr key={index}>
+            <td className="col-id">{destination.destination_id}</td>
+            <td className="col-url">{destination.hostname}{destination.path}</td>
+            <td className="col-other">{destination.http_status_code} {destination.server_response}</td>
+            <td className="col-other">{formatDate(destination.test_timestamp)}</td>
+        </tr>
+    ))}
+</tbody>
                 </table>
             </div>
         </div>
