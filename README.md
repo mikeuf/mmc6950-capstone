@@ -31,11 +31,12 @@ You can stop a running scan by clicking the **Pause** button.
 ### Scan Results
 When the scan job is complete, the results are displayed in a table. Each scanned URL is listed with the result of the test. Most tests should return the status code HTTP 200. This is a standard code that means "OK" (no errors). The results are separated into a **Status** and **Details** column. A status is usually a status code or a brief summary. Details contain more descriptive information that may assist with troubleshooting. If a scan returns an error, the exact text of the error may be included.
 
-#### Downloading Reports
-The scan results can be download by clicking the **Download Report** button. The file is a tab-separated file (.tsv) which can be imported into Excel or viewed with a text editor.
-
 ### Destinations and Job History
-The result of every scan test is automatically saved. To review a list of all URLs that have been tested, click the Destinations link in the header near the top of the site. The destinations are listed along with the their most recent status. This can be downloaded as a tab-separated value (.tsv) file by clicking the **Download Report** button.
+The result of every scan test is automatically saved. To review a list of all URLs that have been tested, click the **Destinations** link in the header near the top of the site. The destinations are listed along with the their most recent status. This can be downloaded as a tab-separated value (.tsv) file by clicking the **Download Report** button.
+
+### Downloading Reports
+The Scan Results and Destinations can be download by clicking the **Download Report** button. The file is a tab-separated file (.tsv) which can be imported into Excel or viewed with a text editor.
+
 
 
 
