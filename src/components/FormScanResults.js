@@ -1,34 +1,22 @@
-// FormScanResults.js
 'use client';
-
 import React from 'react';
-
 export default function FormScanResults({ results }) {
     const downloadReport = () => {
-        // Convert results to TSV format
         const tsvContent = results.map(({ destination, status, details }) =>
             [destination, status, details].join('\t')
         ).join('\n');
-
         const tsvHeader = "Destination\tStatus\tDetails\n";
         const tsvFile = tsvHeader + tsvContent;
-
-        // Create a Blob from the TSV File
         const blob = new Blob([tsvFile], { type: 'text/tab-separated-values;charset=utf-8;' });
-
-        // Create a link to trigger the download
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.href = url;
         link.download = "scan-results.tsv";
         link.style.visibility = 'hidden';
-
-        // Append to document and trigger download
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
-
     return (
     <div>
         <h2 className="display-4">Scan Results</h2>
@@ -68,4 +56,3 @@ export default function FormScanResults({ results }) {
     </div>
     );
 }
-
