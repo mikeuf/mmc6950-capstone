@@ -91,13 +91,6 @@ export default function FormScanInProgress({ jobId, onScanComplete, onScanPaused
 	};
 	return (
 	<div>
-		{ isLoading && !pauseRequested && (
-		<div className="d-flex justify-content-center">
-			<div className="spinner-border" role="status">
-				<span className="visually-hidden">Loading...</span>
-			</div>
-		</div>
-		)}
 		<h2 className="display-4">Scan in Progress</h2>
 		<p className="lead">This may take some time if you are scanning many resources.</p>
 		<form className="mb-4">
@@ -135,6 +128,13 @@ export default function FormScanInProgress({ jobId, onScanComplete, onScanPaused
 					))}
 				</tbody>
 			</table>
+		{ isLoading && !pauseRequested && (
+		<div className="d-flex justify-content-center">
+			<div className="spinner-border" role="status">
+				<span className="visually-hidden">Loading...</span>
+			</div>
+		</div>
+		)}
 		</div>
 	</div>
 	);

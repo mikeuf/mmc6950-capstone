@@ -67,16 +67,14 @@ useEffect(() => {
                 <table className="table table-constrained">
                     <thead>
                         <tr>
-                            <th scope="col" className="col-id">ID</th>
                             <th scope="col" className="col-url">URL</th>
-                            <th scope="col" className="col-other">Status</th>
+                            <th scope="col" className="col-url">Status</th>
                             <th scope="col" className="col-other">Last Updated</th>
                         </tr>
                     </thead>
 <tbody>
     {Array.isArray(destinationData) && destinationData.map((destination, index) => (
         <tr key={index}>
-            <td className="col-id">{destination.destination_id}</td>
             <td className="col-url">{destination.hostname}{destination.path}</td>
             <td className="col-other">{destination.http_status_code} {destination.server_response}</td>
             <td className="col-other">{formatDate(destination.test_timestamp)}</td>

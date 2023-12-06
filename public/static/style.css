@@ -79,3 +79,8 @@ word-break: break-all;
 .btn-light {
     color: #5eb2eb !important;
 }
+
+
+.spinner-border {
+opacity: 0.5;
+}
