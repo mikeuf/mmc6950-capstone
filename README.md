@@ -35,6 +35,6 @@ When the scan job is complete, the results are displayed in a table. Each scanne
 The scan results can be download by clicking the **Download Report** button. The file is a tab-separated file (.tsv) which can be imported into Excel or viewed with a text editor.
 
 ### Destinations
-The results of every scan t
+The result of every scan test is automatically saved. 
 
 
