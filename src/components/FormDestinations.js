@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 export default function FormDestinations() {
     const [destinationData, setDestinationData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 const fetchDestinationStatus = async (destinationId) => {
     try {
@@ -18,10 +19,9 @@ const fetchDestinationStatus = async (destinationId) => {
         return null;
     }
 };
-
-
 useEffect(() => {
     const fetchData = async () => {
+    setIsLoading(true);
         try {
             const destinationResponse = await fetch('/api/get-destinations', {
                 method: 'GET',
@@ -31,26 +31,24 @@ useEffect(() => {
                 throw new Error(`HTTP error! status: ${destinationResponse.status}`);
             }
             const destinations = await destinationResponse.json();
-
-            // Fetch and combine the status for each destination
             const combinedData = await Promise.all(destinations.map(async (destination) => {
                 const status = await fetchDestinationStatus(destination.destination_id);
                 return { ...destination, ...status };
             }));
-
             setDestinationData(combinedData);
+
+    setIsLoading(false);
         } catch (error) {
             console.error('Error getting destinations:', error);
         }
     };
     fetchData();
 }, []);
-
     const formatDate = (isoString) => {
         const date = new Date(isoString);
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
     };
-    console.log("Destinations:", destinationData); 
+
     return (
     <div>
         <h2 className="display-5">Destinations</h2>
@@ -83,6 +81,15 @@ useEffect(() => {
 </tbody>
                 </table>
             </div>
+
+		{ isLoading && (
+		<div className="d-flex justify-content-center">
+			<div className="spinner-border" role="status">
+				<span className="visually-hidden">Loading...</span>
+			</div>
+		</div>
+		)}
+
         </div>
     </div>
     );
