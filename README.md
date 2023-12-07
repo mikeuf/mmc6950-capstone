@@ -26,24 +26,24 @@ Resource Scanner can accept any valid URL. Here are some examples:
 - my.yahoo.com
 - www.apple.com
 
-The URLs can be separated into different lines, or delimited by commas or tabs.
+The URLs can be separated into different lines or delimited by commas or tabs.
 
 2. Click the **Start Scanning** button.
 
 ### Scanning in Progress
-Resource Scaner will test the network connectivity of each destination. The results are updated after each URL is tested, allowing you monitor the scan in real-time.
+Resource Scanner will test the network connectivity of each destination. The results are updated after each URL is tested, allowing you to monitor the scan in real time.
 
 #### Pausing a Scan
 You can stop a running scan by clicking the **Pause** button.
 
 ### Scan Results
-When the scan job is complete, the results are displayed in a table. Each scanned URL is listed with the result of the test. Most tests should return the status code HTTP 200. This is a standard code that means "OK" (no errors). The results are separated into a **Status** and **Details** column. A status is usually a status code or a brief summary. Details contain more descriptive information that may assist with troubleshooting. If a scan returns an error, the exact text of the error may be included.
+When the scan job is complete, the results are displayed in a table. Each scanned URL is listed with the test result. Most tests should return the status code HTTP 200. This is a standard code that means "OK" (no errors). The results are separated into a **Status** and **Details** column. A status is usually a status code or a brief summary. Details contain more descriptive information that may assist with troubleshooting. If a scan returns an error, the exact text of the error may be included.
 
 ### Destinations and Job History
-The result of every scan test is automatically saved. To review a list of all URLs that have been tested, click the **Destinations** link in the header near the top of the site. The destinations are listed along with the their most recent status. This can be downloaded as a tab-separated value (.tsv) file by clicking the **Download Report** button.
+The result of every scan test is automatically saved. To review a list of all URLs that have been tested, click the **Destinations** link in the header near the top of the site. The destinations are listed along with their most recent status. This can be downloaded as a tab-separated value (.tsv) file by clicking the **Download Report** button.
 
 ### Downloading Reports
-The Scan Results and Destinations can be download by clicking the **Download Report** button. The file is a tab-separated file (.tsv) which can be imported into Excel or viewed with a text editor.
+The Scan Results and Destinations reports can be downloaded by clicking the **Download Report** button. The file is a tab-separated file (.tsv) that can be imported into Excel or viewed with a text editor.
 
 
 
