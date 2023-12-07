@@ -1,6 +1,6 @@
 # Resource Scanner
 
-## Idea
+## Purpose and Inspiration for This Project
 Offload the tedious work of keeping long lists of internet resources up-to-date by letting Resource Scanner check the status of each URL in a list that you provide.
 
 - Identify invalid URL entries.
@@ -8,7 +8,6 @@ Offload the tedious work of keeping long lists of internet resources up-to-date 
 - Automatically combine the historical data from multiple scan jobs into a live inventory that always shows the most recent status for all URLs ever tested.
 - Download reports that can imported into Excel or viewed with a text editor.
 
-## Purpose
 Resource Scanner tests the current status of a list of internet resources the user provides. Whenever possible, it differentiates between invalid URLs and temporarily unavailable resources. A database stores the results for future checks, enabling changes to be tracked over time and distinguishing between permanent unavailability or transient outages. The user can configure the scanner to send email notifications upon analysis completion.
 
 ## Link to Live Site
